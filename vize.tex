@@ -86,8 +86,8 @@ Ayrıca, Hopfield ağları, aynı zamanda birçok uygulama için de kullanılabi
 Hopfield ağı, aşağıdaki özelliklere sahiptir:
 
     - Sınırlı kapasiteli: Hopfield ağı, sınırlı sayıda deseni hatırlayabilir. 
-    Bu kapasite, ağın boyutuna ve desenlerin karmaşıklığına bağlıdır.
-    Enerji fonksiyonu: Hopfield ağı, bir enerji fonksiyonu kullanır. Bu fonksiyon, ağın mevcut durumunun bir ölçüsüdür ve hatırlama işleminde kullanılır.\newline
+    Bu kapasite, ağın boyutuna ve desenlerin karmaşıklığına bağlıdır.\newline
+    - Enerji fonksiyonu: Hopfield ağı, bir enerji fonksiyonu kullanır. Bu fonksiyon, ağın mevcut durumunun bir ölçüsüdür ve hatırlama işleminde kullanılır.\newline
     - Asenkron çalışma: Hopfield ağı, nöronları asenkron bir şekilde hesaplar. Bu, ağın daha hızlı çalışmasına ve daha az bellek kullanmasına olanak tanır.\newline
    - Geri besleme: Hopfield ağı, geri beslemeli bir yapıya sahiptir. Bu yapı, ağın hatırlama işlemi için önemlidir.
 
@@ -125,7 +125,22 @@ Geri beslemeli yapılı yapay sinir ağları, öğrenme sürecinde de kullanıla
 
 \subsection{(8 Puan)} \textbf{ChatGPT’nin açıklamalarından ne anladığınızı buraya kendi kelimelerinizle özetleyin. Örneğin ``Hopfield Network nedir? Ne işe yarar? Neden bilmemiz gerekir bunu? Gerçek hayatta kullanılıyor mu?'' gibi. Anlamadığınız kısımlar varsa ve ChatGPT’nin açıklamaları yeterli gelmezse internet dahil farklı kaynaklardan araştırıp, bilgilerin doğruluğunu sorgulamakta serbestsiniz. Konuyu doğru anlayıp anlamamanız puana etki edecektir. Kullandığınız kaynakları da belirtin!}
 
-Cevap buraya gelecek...
+Hopfield Network diğer yapay sinir ağlarından farklı şekilde tepki veren özel bir yapay sinir ağıdır. Yakınsayan(converging) yinelenen süreç ile hesaplanır.
+Input ve outputun boyuna ilişkin olan sadece bir kat nöronlara sahitptir ve input ile output aynı boyutta olması gerekir. Katmandaki nöron sayılarına göre kapasiteleri vardır. Fakat kapasitesi sınırlıdır. Hopfield ağı işlemi iki aşamadan oluşamaktadır: Depolama aşaması ve geri çağırma aşaması. Depolama aşamasında nesneler veya karakterler depolanır bu eğitim aşamasıdır. Bu depolama saklama, hatırlama ve yeniden çağırılma amacıyla yapılır. Öğrenme işlemi, ağın önceden tanımlanmış bir enerji fonksiyonuna göre gerçekleşir. Bu enerji fonksiyonu, ağın doğru bir şekilde öğrenmesi için hedef çıkış değerlerini tanımlar. Öğrenme işlemi tamamlandıktan sonra, ağa hatırlatma işlemi uygulanabilir. Hatırlatma işlemi, ağa daha önce öğrenilmiş verilerin sunulması ile gerçekleşir. Hatırlatma işleminde de enerji fonksiyonları kullanılır. Ağ, bu verileri hatırlar ve doğru çıkışları üretir. Hopfield ağları senkron modda da çalışabilirmiş. Asenkron modda, ağdaki her bir nöron kendi başına çalışır ve değerleri sadece kendisini etkileyen diğer nöronlardan alır. Senkron modda ise, tüm ağ aynı anda hesaplama yapar ve her bir nöronun değerleri tüm nöronlara aynı anda yayılır.Bildiğim kadarıyla, Hopfield'ın çalışması üzerine inşa edildikleri için Boltzmann Makineleri ve Deep Belief Networks anlatılmak istendiğinde çoğunlukla ders kitaplarında tanıtılıyor ve bahsediliyorlar. Ancak derin öğrenmenin mevcut durumuna kıyasla öğrenme sistemlerine o kadar farklı ve alternatif bir bakış açısı sunuyorlar ki, sırf bu yüzden bile anlamaya değerdir.  
+
+ Kullanım alanları:
+
+    * Şifreleme işlemlerinde
+    * Karakter-Desen Eşleştirmede
+    * Bozuk Şekillerin Yeniden Oluşturulmasında
+    * El Yazı Tanımlama Sistemlerinde
+
+    Kaynaklar: 
+
+    \url{https://medium.com/@batincangurbuz/hopfield-a%C4%9F-modeli-hopfield-network-hn-ccf1548ca432}
+    \url{https://www.javatpoint.com/artificial-neural-network-hopfield-network}\newline
+    \url{https://towardsdatascience.com/hopfield-networks-are-useless-heres-why-you-should-learn-them-f0930ebeadcd}
+    
 
 \section{(Toplam 10 Puan) Boltzman Machine:}
 
@@ -158,7 +173,19 @@ Cevap: Bir yapay sinir ağında, bias, her bir nöronun çıktısına eklenen sa
 
 \subsection{(8 Puan)} \textbf{ChatGPT’nin açıklamalarından ne anladığınızı buraya kendi kelimelerinizle özetleyin. Örneğin ``Boltzman Machine nedir? Ne işe yarar? Neden bilmemiz gerekir bunu? Gerçek hayatta kullanılıyor mu?'' gibi. Anlamadığınız kısımlar varsa ve ChatGPT’nin açıklamaları yeterli gelmezse internet dahil farklı kaynaklardan araştırıp, bilgilerin doğruluğunu sorgulamakta serbestsiniz. Konuyu doğru anlayıp anlamamanız puana etki edecektir. Kullandığınız kaynakları da belirtin!}
 
-Cevap buraya gelecek...
+Boltzman Machine sınıflandırma, modelleme, veri sıkıştırma ve veri işleme gibi alanlarda kullanılan bir yapay ağ sinir modelidir. 
+
+Boltzmann Makinesi iki katmanlı bir sinir ağından oluşur. Bu modelin ilk katmanı görünür ya da input layer, ikincisi ise hidden layer olarak adlandırılır. Bunlar düğüm adı verilen nöron benzeri birimlerden oluşur ve hesaplamalar burada gerçekleşir. Bu düğümler katmanlar arasında birbirine bağlıdır, ancak aynı katmandaki iki düğüm birbirine bağlı değildir. Bu nedenle katman içi iletişim yoktur ve dolayısıyla Boltzmann makinesindeki kısıtlamalardan biridir. Hesaplama yoluyla her düğüm girdiyi işler ve bu girdiyi iletip iletmeme konusunda rastgele kararlar verir. Veri girdi olarak verildiğinde, bu düğümler tüm parametreleri, örüntülerini ve aralarındaki korelasyonu kendi başlarına öğrenir ve verimli bir sistem oluşturur. Bu nedenle bir Boltzmann Makinesi, unsupervised modeli olarak da adlandırılır.
+
+Öncelikle, rastgele bir giriş verisi düğümlere uygulanır ve ardından düğümlerdeki değerler belirli bir hesaplama yöntemiyle güncellenir. Bu hesaplama, tüm düğümlerin enerji fonksiyonunun hesaplanmasını içerir ve bu enerji fonksiyonu, her bir düğümün durumunun girdi verisine göre ne kadar uyumlu olduğunu belirler. Enerji fonksiyonu, ağırlıklar ve düğümlerin durumu arasındaki kombinasyonlara bağlıdır.
+
+Boltzman Machine'nin birden farklı RBM gibi türleri vardır. Boltzmann Makineleri, çok sayıda niteliğe ve şu anda modern teknoloji çağında uygulanmakta olan çok sayıda kullanıma sahip oldukları için gelişmiş bir sinir ağı biçimi olarak düşünülebilir. Birçok varyasyonu vardır ve sürekli iyileştirmeler ve geliştirmeler hala keşfedilmeyi beklemektedir. Kullanıldıklarında büyük bir avantaj sağlarlar ve eğitimleri ile optimizasyonları için popülerdirler.
+
+ Kaynaklar: 
+
+    \url{https://analyticsindiamag.com/beginners-guide-to-boltzmann-machines/} \newline
+    \url{https://medium.com/@batincangurbuz/boltzman-makinesi-boltzmann-machines-bm-ve-k%C4%B1s%C4%B1tlanm%C4%B1%C5%9F-boltzmann-makineleri-restricted-boltzmann-6f2e0f839b05}\newline
+    \url{https://towardsdatascience.com/hopfield-networks-are-useless-heres-why-you-should-learn-them-f0930ebeadcd}
 
 \section{(Toplam 10 Puan) Markov Assumption ve Markov Chain:}
 
@@ -187,7 +214,21 @@ Cevap: Geçiş matrisi, Markov zincirindeki her bir durumun diğer durumlara ge�
 
 \subsection{(8 Puan)} \textbf{ChatGPT’nin açıklamalarından ne anladığınızı buraya kendi kelimelerinizle özetleyin. Örneğin ``Markov assumption ve Markov Chain nedir? Ne işe yarar? Neden bilmemiz gerekir bunu? Gerçek hayatta kullanılıyor mu?'' gibi. Anlamadığınız kısımlar varsa ve ChatGPT’nin açıklamaları yeterli gelmezse internet dahil farklı kaynaklardan araştırıp, bilgilerin doğruluğunu sorgulamakta serbestsiniz. Konuyu doğru anlayıp anlamamanız puana etki edecektir. Kullandığınız kaynakları da belirtin!}
 
-Cevap buraya gelecek...
+Markov assumption bir sistemin gelecekteki durumunun yalnızca mevcut durumuna bağlı olduğunu ve geçmiş durumlarına bağlı olmadığını varsayar. Bu varsayım genellikle konuşma, dil ve zaman serisi verileri gibi sıralı verilerin modellenmesinde kullanılır ve Gizli Markov Modelleri (HMM'ler) ve Tekrarlayan Sinir Ağları (RNN'ler) gibi birçok sinir ağı modelinin tasarımında temeldir. Bu varsayımı yaparak, bu modeller girdi verilerinin zamansal dinamiklerini etkili bir şekilde yakalayabilir ve geçmiş gözlemlerin geçmişine dayanarak doğru tahminler yapabilir.
+
+
+Markov Zincirleri, dinamik ve stokastik sistemlerin analizinde ve özellikle bir sistemin zaman boyunca içinde bulunabileceği farklı durumlar arasında yaptığı hareketlerin incelenmesinde kullanılan modellerdir. Genel olarak, Markov Zincirleri kavramsal olarak sezgiseldir ve herhangi bir gelişmiş istatistiksel veya matematiksel kavram kullanılmadan uygulanabilmeleri erişilebilirdir.
+
+Markov zinciri bir stokastik süreçtir, ancak Markov zincirinin "hafızasız" olması gerektiği için genel bir stokastik süreçten farklıdır. Yani, gelecekteki eylemlerin (olasılığı) mevcut duruma yol açan adımlara bağlı değildir. Buna Markov özelliği denir. Markov zincirleri teorisi tam da pek çok "gündelik" süreç Markov özelliğini karşıladığı için önemli olsa da, Markov özelliğini karşılamayan pek çok yaygın stokastik özellik örneği vardır.
+
+Markov zincirleri, rastgele süreçleri istatistiksel olarak modellemenin oldukça yaygın ve nispeten basit bir yoludur. Metin oluşturmadan finansal modellemeye kadar birçok farklı alanda kullanılmıştır. Fakat en çok kullanılan alanları ise metin oluşturma ve otomatik tamamlama uygulamalarıdır.
+
+
+   Kaynaklar: 
+
+    \url{https://medium.com/@batincangurbuz/markov-zinciri-markov-chain-mc-33cd8a61f6fa}
+    \url{https://brilliant.org/wiki/markov-chains/k}\newline
+    \url{https://towardsdatascience.com/introduction-to-markov-chains-50da3645a50d}
 
 \section{(Toplam 20 Puan) Feed Forward:}
  
