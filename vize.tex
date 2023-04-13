@@ -349,21 +349,157 @@ Prenses, kendisini iyileştiren veri setini de, gelecekte onların izinden gidec
 \subsection{(10 Puan)} \textbf{Bu MLP'nin pytorch ile yazılmış class'ının kodunu aşağı kod bloğuna yapıştırın:}
 
 \begin{python}
-kod_buraya = None
-if kod_buraya:
-    devam_ise_buraya = 0
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
-print(devam_ise_buraya)
+class MLP(nn.Module):
+    def __init__(self, num_input_feats, num_hidden_neuron_1, num_hidden_neuron_2, num_classes):
+        super(MLP, self).__init__()
+        self.hidden_layer_1 = nn.Linear(num_input_feats, num_hidden_neuron_1)
+        self.hidden_layer_2 = nn.Linear(num_hidden_neuron_1, num_hidden_neuron_2)
+        self.output_layer = nn.Linear(num_hidden_neuron_2, num_classes)
+        
+    def forward(self, x):
+        x = x.view(x.size(0), -1)
+        hidden_res_1 = F.relu(self.hidden_layer_1(x))
+        hidden_res_2 = F.relu(self.hidden_layer_2(hidden_res_1))
+        output = F.sigmoid(self.output_layer(hidden_res_2))
+        return output
 \end{python}
 
 \subsection{(10 Puan)} \textbf{SEED=öğrenci numaranız set ettikten sonra altıncı haftada yazdığımız gibi training batch'lerinden eğitim loss'ları, validation batch'lerinden validasyon loss değerlerini hesaplayan kodu aşağıdaki kod bloğuna yapıştırın ve çıkan figürü de alta ekleyin.}
 
 \begin{python}
-kod_buraya = None
-if kod_buraya:
-    devam_ise_buraya = 0
+import numpy as np
+import pandas as pd
+!pip install torchtext==0.10.0
 
-print(devam_ise_buraya)
+import torch
+
+SEED = 210401006
+torch.manual_seed(SEED)
+
+from torchtext.legacy import data, datasets
+import random
+import nltk
+
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('brown')
+nltk.download('webtext')
+
+def load_dataset(sentence_length=50, batch_size=32, seed=SEED):
+
+  TEXT = data.Field(sequential=True,
+                    tokenize=nltk.word_tokenize,
+                    lower=True,
+                    include_lengths=True,
+                    batch_first=True,
+                    fix_length=sentence_length)
+  LABEL = data.LabelField(dtype=torch.float)
+  
+  train_df = pd.read_csv('/content/cure_the_princess_train.csv') 
+  test_df = pd.read_csv('/content/cure_the_princess_test.csv')
+  val_df = pd.read_csv('/content/cure_the_princess_val.csv')
+
+
+  train_examples = train_df.to_dict('records')
+  test_examples = test_df.to_dict('records')
+  val_examples = val_df.to_dict('records')
+
+
+  train_data = data.Dataset(examples=train_examples, fields={'text': ('text', TEXT), 'label': ('label', LABEL)})
+  test_data = data.Dataset(examples=test_examples, fields={'text': ('text', TEXT), 'label': ('label', LABEL)})
+  val_data = data.Dataset(examples=val_examples, fields={'text': ('text', TEXT), 'label': ('label', LABEL)})
+
+
+  TEXT.build_vocab(train_data)
+  LABEL.build_vocab(train_data)
+
+
+  train_iter, test_iter = data.BucketIterator.splits((train_data, test_data),
+                                                      batch_size=batch_size, 
+                                                      sort_key=lambda x: len(x.text),
+                                                      repeat=False, shuffle=True)
+  val_iter = data.BucketIterator(dataset=val_data,
+                                  batch_size=batch_size, 
+                                  sort_key=lambda x: len(x.text),
+                                  repeat=False, shuffle=True)
+
+  vocab_size = len(TEXT.vocab)
+
+  print(f"Data loading is completed. Sentence length: {sentence_length}, Batch size: {batch_size}, and seed: {seed}")
+
+  return TEXT, vocab_size, train_iter, val_iter, test_iter
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class MLP(nn.Module):
+    def __init__(self, num_input_feats, num_hidden_neuron_1, num_hidden_neuron_2, num_classes):
+        super(MLP, self).__init__()
+        self.hidden_layer_1 = nn.Linear(num_input_feats, num_hidden_neuron_1)
+        self.hidden_layer_2 = nn.Linear(num_hidden_neuron_1, num_hidden_neuron_2)
+        self.output_layer = nn.Linear(num_hidden_neuron_2, num_classes)
+        
+    def forward(self, x):
+        x = x.view(x.size(0), -1)
+        hidden_res_1 = F.relu(self.hidden_layer_1(x))
+        hidden_res_2 = F.relu(self.hidden_layer_2(hidden_res_1))
+        output = F.sigmoid(self.output_layer(hidden_res_2))
+        return output
+
+    import torch.optim as optim
+
+
+TEXT, vocab_size, train_iter, val_iter, test_iter = load_dataset(sentence_length=50, batch_size=16, seed=SEED)
+
+model = MLP(vocab_size, 64, 32, 1)
+
+criterion = nn.BCELoss()
+
+optimizer = optim.SGD(model.parameters(), lr=0.01)
+
+num_epochs = 10
+best_valid_loss = float('inf')
+
+for epoch in range(num_epochs):
+    train_loss = 0.0
+    valid_loss = 0.0
+    model.train()
+    
+    for batch in train_iter:
+        optimizer.zero_grad()
+        text, text_lengths = batch.text
+        labels = batch.label.unsqueeze(1)
+        output = model(text)
+        loss = criterion(output, labels)
+        loss.backward()
+        optimizer.step()
+        train_loss += loss.item() * len(batch)
+    
+    model.eval()
+    
+    with torch.no_grad():
+        for batch in val_iter:
+            text, text_lengths = batch.text
+            labels = batch.label.unsqueeze(1)
+            output = model(text)
+            loss = criterion(output, labels)
+            valid_loss += loss.item() * len(batch)
+    
+    train_loss /= len(train_iter.dataset)
+    valid_loss /= len(val_iter.dataset)
+    
+    if valid_loss < best_valid_loss:
+        best_valid_loss = valid_loss
+        torch.save(model.state_dict(), 'best_model.pt')
+    
+    print(f'Epoch: {epoch+1:02}, Train Loss: {train_loss:.3f}, Val. Loss: {valid_loss:.3f}')
+
+
+
 \end{python}
 
 % Figure aşağıda comment içindeki kısımdaki gibi eklenir.
@@ -400,7 +536,7 @@ Sonuçlar buraya
     \end{tabular}
     \label{tab:my_table}
 \end{table}
-
+\newline
 \subsection{(3 Puan)} \textbf{Modelin eğitim setine overfit etmesi için elinizden geldiği kadar kodu gereken şekilde değiştirin, validasyon loss'unun açıkça yükselmeye başladığı, training ve validation loss'ları içeren figürü aşağı koyun ve overfit için yaptığınız değişiklikleri aşağı yazın. Overfit, tam bir çanak gibi olmalı ve yükselmeli. Ona göre parametrelerle oynayın.}
 
 Cevaplar buraya
@@ -417,7 +553,7 @@ Cevaplar buraya
 
 \subsection{(2 Puan)} \textbf{Beşinci soruya ait tüm kodların ve cevapların olduğu jupyter notebook'un Github linkini aşağıdaki url'e koyun.}
 
-\url{www.benimgithublinkim.com}
+\url{https://github.com/aliyetgin/cure_the_princess}
 
 \section{(Toplam 10 Puan)} \textbf{Bir önceki sorudaki Prensesi İyileştir problemindeki yapay sinir ağınıza seçtiğiniz herhangi iki farklı regülarizasyon yöntemi ekleyin ve aşağıdaki soruları cevaplayın.} 
 
