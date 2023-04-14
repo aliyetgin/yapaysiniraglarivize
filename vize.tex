@@ -432,6 +432,8 @@ def load_dataset(sentence_length=50, batch_size=32, seed=SEED):
   print(f"Data loading is completed. Sentence length: {sentence_length}, Batch size: {batch_size}, and seed: {seed}")
 
   return TEXT, vocab_size, train_iter, val_iter, test_iter
+
+   TEXT, vocab_size, train_iter, val_iter, test_iter = load_dataset(sentence_length=50, batch_size=32, seed=SEED)
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
